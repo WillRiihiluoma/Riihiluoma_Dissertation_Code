@@ -1,0 +1,846 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     34908,        838]
+NotebookOptionsPosition[     34602,        825]
+NotebookOutlinePosition[     34952,        840]
+CellTagsIndexPosition[     34909,        837]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"rawdata", "=", 
+    RowBox[{
+     RowBox[{
+     "Import", "[", 
+      "\"\<C:\\\\Users\\\\riiwi\\\\OneDrive - University of Maine \
+System\\\\Will\\\\Data Collection and Analysis\\\\Surveys \
+F21\\\\UMaine\\\\F21UMaineRaw.0.xlsx\>\"", "]"}], "[", 
+     RowBox[{"[", "2", "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Pulls", " ", "data", " ", "from", " ", "the", " ", "raw", " ", "file", 
+    " ", "out", " ", "of", " ", "Qualtrics", " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+      "albeit", " ", "after", " ", "manually", " ", "filling", " ", "the", 
+       " ", "empty", " ", "cells", " ", 
+       RowBox[{"with", " ", "'"}], 
+       RowBox[{"z", "'"}], 
+       RowBox[{"s", ".", "  ", "This"}], " ", "is", " ", "necessary", " ", 
+       "because", " ", "empty", " ", "cells", " ", "are", " ", "completely", 
+       " ", "unusable", " ", "in", " ", "Mathematica"}], ",", " ", 
+      RowBox[{
+      "as", " ", "they", " ", "are", " ", "not", " ", "empty", " ", "strings",
+        " ", "a", " ", "la", " ", "\"\<\>\""}], ",", " ", 
+      RowBox[{"but", " ", "just", " ", "voids", " ", "in", " ", 
+       RowBox[{"general", ".", "  ", "Cannot"}], " ", "be", " ", "worked", 
+       " ", "with"}], ",", " ", 
+      RowBox[{
+      "and", " ", "mess", " ", "up", " ", "the", " ", "process", " ", "of", 
+       " ", "this", " ", 
+       RowBox[{"code", ".", "  ", "BEFORE"}], " ", "RUNNING", " ", "THIS", 
+       " ", "CODE"}], ",", " ", 
+      RowBox[{
+      "FILL", " ", "ALL", " ", "EMPTY", " ", "CELLS", " ", "IN", " ", "THE", 
+       " ", "EXCEL", " ", "FILE", " ", "WITH", " ", "THE", " ", 
+       RowBox[{"LETTER", " ", "'"}], 
+       RowBox[{"Z", "'"}]}]}], " "}]}], "*)"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SetDirectory", "[", 
+    RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ";"}], "  ", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "makes", " ", "it", " ", "so", " ", "whatever", " ", "files", " ", "are", 
+    " ", "exported", " ", "from", " ", "this", " ", "code", " ", "are", " ", 
+    "saved", " ", "to", " ", "the", " ", "same", " ", 
+    RowBox[{"folder", "/", "filepath"}], " ", "as", " ", "this", " ", "code", 
+    " ", "is", " ", "saved", " ", "in"}], " ", "*)"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"NumR", "=", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Dimensions", "[", "rawdata", "]"}], "[", 
+      RowBox[{"[", "1", "]"}], "]"}], "-", "2"}]}], ";"}], "     ", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "defines", " ", "#", " ", "of", " ", "respondents", " ", "to", " ", 
+     "survey", " ", "as", " ", 
+     RowBox[{"\"\<NumR\>\"", ".", "  ", "The"}]}], " ", "-", 
+    RowBox[{
+    "2", " ", "is", " ", "for", " ", "removing", " ", "the", " ", "first", 
+     " ", "two", " ", "rows", " ", "from", " ", "the", " ", "data"}]}], " ", 
+   "*)"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"table1a", "=", 
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{"rawdata", "[", 
+       RowBox[{"[", 
+        RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"i", ",", "2", ",", 
+        RowBox[{"NumR", "+", "2"}], ",", "1"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"j", ",", "20", ",", "230", ",", "21"}], "}"}]}], "]"}]}], 
+   ";"}], "    ", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "these", " ", "two", " ", "remove", " ", "all", " ", "of", " ", "the", 
+     " ", "interstitial", " ", "columns"}], ",", " ", 
+    RowBox[{
+    "leaving", " ", "only", " ", "columns", " ", "with", " ", "expressions", 
+     " ", "used"}]}], " ", "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"table1b", "=", 
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{"rawdata", "[", 
+       RowBox[{"[", 
+        RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"i", ",", "2", ",", 
+        RowBox[{"NumR", "+", "2"}], ",", "1"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"j", ",", "231", ",", "252", ",", "21"}], "}"}]}], "]"}]}], 
+   ";"}], "    ", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "this", " ", "one", " ", "is", " ", "necessary", " ", "due", " ", "to", 
+    " ", "the", " ", "free", " ", "response", " ", "questionss", " ", 
+    "breaking", " ", "up", " ", "the", " ", "periodicity", " ", "of", " ", 
+    "the", " ", "first", " ", "several", " ", "questions"}], " ", "*)"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"table1", "=", 
+    RowBox[{"Join", "[", 
+     RowBox[{"table1a", ",", "table1b", ",", "2"}], "]"}]}], ";"}], "  ", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "combines", " ", "the", " ", "two", " ", "tables", " ", "together"}], ",",
+     " ", 
+    RowBox[{
+    "making", " ", "a", " ", "table", " ", "containing", " ", "only", " ", 
+     "the", " ", "columns", " ", "of", " ", "expressions", " ", "that", " ", 
+     "the", " ", "students", " ", "dragged", " ", "into", " ", "the", " ", 
+     "boxes"}]}], " ", "*)"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"table1", "//", "MatrixForm"}], ";"}], "  ", 
+  RowBox[{"(*", " ", 
+   RowBox[{"just", " ", "to", " ", "make", " ", "sure", " ", 
+    RowBox[{"it", "'"}], "s", " ", "actually", " ", "working"}], " ", "*)"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"NumQ", "=", 
+    RowBox[{
+     RowBox[{"Dimensions", "[", "table1", "]"}], "[", 
+     RowBox[{"[", "2", "]"}], "]"}]}], ";"}], "    ", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "defines", " ", "#", " ", "of", " ", "questions", " ", "on", " ", "survey",
+     " ", "as", " ", "\"\<NumQ\>\""}], " ", "*)"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Export", "[", 
+    RowBox[{"\"\<F21UMaineCleaned.xlsx\>\"", ",", "table1"}], "]"}], ";"}], 
+  "    ", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "exports", " ", "file", " ", "of", " ", "the", " ", "raw", " ", "data", 
+    " ", "after", " ", "being", " ", "stripped", " ", "of", " ", "the", " ", 
+    "order", " ", "in", " ", "which", " ", "students", " ", "dragged", " ", 
+    "the", " ", "expressions", " ", "into", " ", "the", " ", "boxes", " ", 
+    "as", " ", "\"\<_____Cleaned\>\""}], " ", "*)"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"table2", "=", "table1"}], ";"}], "  ", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"initializes", " ", "table2"}], ",", " ", 
+    RowBox[{"so", " ", "we", " ", 
+     RowBox[{"don", "'"}], "t", " ", "mess", " ", "with", " ", "table1", " ", 
+     "going", " ", "forward"}]}], " ", "*)"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+  "stringa", "=", 
+   "\"\<Select which expression(s) (if any) are representations of the given \
+concept, and drag them into the concept's box. - Groups - \>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+  "stringb", "=", 
+   "\"\<Above are the sixteen expressions you were given and asked to sort \
+throughout this survey.  In the previous question, you were asked to select \
+which expression(s) represented the concept of \\\"probability.\\\" \\n\\nOf \
+the list provided, you chose:\\n\\n \
+\\n\\n[QID246-ChoiceGroup-SelectedChoices]\\n\\n \\n\\nPlease discuss why you \
+selected those expressions as representing \\\"probability.\\\"  For \
+brevity's sake, please refer to any expressions using the numbers provided in \
+the list above.\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+   "stringc", "=", 
+    "\"\<Above are the sixteen expressions you were given and asked to sort \
+throughout this survey.  In the previous question, you were asked to select \
+which expression(s) represented the concept of \\\"probability amplitude.\\\"\
+\\\\n \\\\n\\\\nOf the list provided, you chose:\\\\n\\\\n \
+\\\\n\\\\n[QID247-ChoiceGroup-SelectedChoices]\\\\n\\\\n \\\\n\\\\nPlease \
+discuss why you selected those expressions as representing \\\"probability \
+amplitude.\\\"  For brevity's sake, please refer to any expressions using the \
+numbers provided in the list above.\>\""}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"For", "[", 
+   RowBox[{
+    RowBox[{"i", "=", "1"}], ",", 
+    RowBox[{"i", "<", "NumR"}], ",", 
+    RowBox[{"i", "++"}], ",", "    ", 
+    RowBox[{"(*", " ", 
+     RowBox[{
+     "this", " ", "nested", " ", "loop", " ", "replaces", " ", "the", " ", 
+      "html", " ", "versions", " ", "of", " ", "the", " ", "expressions", " ",
+       "for", " ", "their", " ", "corresponding", " ", 
+      RowBox[{"letters", ".", "  ", "Also"}], " ", "cleans", " ", "up", " ", 
+      "the", " ", "question", " ", "prompts"}], " ", "*)"}], 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"For", "[", 
+      RowBox[{
+       RowBox[{"j", "=", "1"}], ",", 
+       RowBox[{"j", "<", "NumQ"}], ",", 
+       RowBox[{"j", "++"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"table2", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"table2", "[", 
+             RowBox[{"[", 
+              RowBox[{"i", ",", "j"}], "]"}], "]"}], "=", 
+            RowBox[{"StringReplace", "[", 
+             RowBox[{
+              RowBox[{"table2", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+              RowBox[{"stringa", "\[Rule]", "\"\<\>\""}]}], "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", 
+             RowBox[{"NumR", "+", "1"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"j", ",", "1", ",", "NumQ"}], "}"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"table2", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"table2", "[", 
+             RowBox[{"[", 
+              RowBox[{"i", ",", "j"}], "]"}], "]"}], "=", 
+            RowBox[{"StringReplace", "[", 
+             RowBox[{
+              RowBox[{"table2", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+              RowBox[{"stringb", "\[Rule]", "\"\<QProb\>\""}]}], "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", 
+             RowBox[{"NumR", "+", "1"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"j", ",", "1", ",", "NumQ"}], "}"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"table2", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"table2", "[", 
+             RowBox[{"[", 
+              RowBox[{"i", ",", "j"}], "]"}], "]"}], "=", 
+            RowBox[{"StringReplace", "[", 
+             RowBox[{
+              RowBox[{"table2", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+              RowBox[{"stringc", "\[Rule]", "\"\<QProbAmpl\>\""}]}], "]"}]}], 
+           ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", 
+             RowBox[{"NumR", "+", "1"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"j", ",", "1", ",", "NumQ"}], "}"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"table2", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"table2", "[", 
+             RowBox[{"[", 
+              RowBox[{"i", ",", "j"}], "]"}], "]"}], "=", 
+            RowBox[{"StringReplace", "[", 
+             RowBox[{
+              RowBox[{"table2", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+              RowBox[{
+              "\"\<\\\\(\\\\vec{v}\\\\)\>\"", "\[Rule]", "\"\<a\>\""}]}], 
+             "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", 
+             RowBox[{"NumR", "+", "1"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"j", ",", "1", ",", "NumQ"}], "}"}]}], "]"}]}], ";", 
+        RowBox[{"table2", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"table2", "[", 
+             RowBox[{"[", 
+              RowBox[{"i", ",", "j"}], "]"}], "]"}], "=", 
+            RowBox[{"StringReplace", "[", 
+             RowBox[{
+              RowBox[{"table2", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+              RowBox[{
+              "\"\<\\\\(\\\\hat j\\\\)\>\"", "\[Rule]", "\"\<b\>\""}]}], 
+             "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", 
+             RowBox[{"NumR", "+", "1"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"j", ",", "1", ",", "NumQ"}], "}"}]}], "]"}]}], ";", 
+        RowBox[{"table2", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"table2", "[", 
+             RowBox[{"[", 
+              RowBox[{"i", ",", "j"}], "]"}], "]"}], "=", 
+            RowBox[{"StringReplace", "[", 
+             RowBox[{
+              RowBox[{"table2", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+              RowBox[{
+              "\"\<\\\\(\\\\hat{S_z}\\\\)\>\"", "\[Rule]", "\"\<c\>\""}]}], 
+             "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", 
+             RowBox[{"NumR", "+", "1"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"j", ",", "1", ",", "NumQ"}], "}"}]}], "]"}]}], ";", 
+        RowBox[{"table2", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"table2", "[", 
+             RowBox[{"[", 
+              RowBox[{"i", ",", "j"}], "]"}], "]"}], "=", 
+            RowBox[{"StringReplace", "[", 
+             RowBox[{
+              RowBox[{"table2", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+              RowBox[{"\"\<\\\\(f(x)\\\\)\>\"", "\[Rule]", "\"\<d\>\""}]}], 
+             "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", 
+             RowBox[{"NumR", "+", "1"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"j", ",", "1", ",", "NumQ"}], "}"}]}], "]"}]}], ";", 
+        RowBox[{"table2", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"table2", "[", 
+             RowBox[{"[", 
+              RowBox[{"i", ",", "j"}], "]"}], "]"}], "=", 
+            RowBox[{"StringReplace", "[", 
+             RowBox[{
+              RowBox[{"table2", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+              RowBox[{
+              "\"\<\\\\(|\\\\psi\\\\rangle\\\\)\>\"", "\[Rule]", 
+               "\"\<e\>\""}]}], "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", 
+             RowBox[{"NumR", "+", "1"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"j", ",", "1", ",", "NumQ"}], "}"}]}], "]"}]}], ";", 
+        RowBox[{"table2", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"table2", "[", 
+             RowBox[{"[", 
+              RowBox[{"i", ",", "j"}], "]"}], "]"}], "=", 
+            RowBox[{"StringReplace", "[", 
+             RowBox[{
+              RowBox[{"table2", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+              RowBox[{
+              "\"\<\\\\(|E_2\\\\rangle\\\\)\>\"", "\[Rule]", "\"\<f\>\""}]}], 
+             "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", 
+             RowBox[{"NumR", "+", "1"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"j", ",", "1", ",", "NumQ"}], "}"}]}], "]"}]}], ";", 
+        RowBox[{"table2", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"table2", "[", 
+             RowBox[{"[", 
+              RowBox[{"i", ",", "j"}], "]"}], "]"}], "=", 
+            RowBox[{"StringReplace", "[", 
+             RowBox[{
+              RowBox[{"table2", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+              RowBox[{
+              "\"\<\\\\(\\\\langle E_1 |\\\\)\>\"", "\[Rule]", 
+               "\"\<g\>\""}]}], "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", 
+             RowBox[{"NumR", "+", "1"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"j", ",", "1", ",", "NumQ"}], "}"}]}], "]"}]}], ";", 
+        RowBox[{"table2", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"table2", "[", 
+             RowBox[{"[", 
+              RowBox[{"i", ",", "j"}], "]"}], "]"}], "=", 
+            RowBox[{"StringReplace", "[", 
+             RowBox[{
+              RowBox[{"table2", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+              RowBox[{
+              "\"\<\\\\(\\\\psi(x)\\\\)\>\"", "\[Rule]", "\"\<h\>\""}]}], 
+             "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", 
+             RowBox[{"NumR", "+", "1"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"j", ",", "1", ",", "NumQ"}], "}"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"table2", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"table2", "[", 
+             RowBox[{"[", 
+              RowBox[{"i", ",", "j"}], "]"}], "]"}], "=", 
+            RowBox[{"StringReplace", "[", 
+             RowBox[{
+              RowBox[{"table2", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+              RowBox[{
+              "\"\<\\\\(\\\\psi^*(x)\\\\)\>\"", "\[Rule]", "\"\<i\>\""}]}], 
+             "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", 
+             RowBox[{"NumR", "+", "1"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"j", ",", "1", ",", "NumQ"}], "}"}]}], "]"}]}], ";", 
+        RowBox[{"table2", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"table2", "[", 
+             RowBox[{"[", 
+              RowBox[{"i", ",", "j"}], "]"}], "]"}], "=", 
+            RowBox[{"StringReplace", "[", 
+             RowBox[{
+              RowBox[{"table2", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+              RowBox[{
+              "\"\<\\\\(\\\\varphi_3(x)\\\\)\>\"", "\[Rule]", "\"\<j\>\""}]}],
+              "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", 
+             RowBox[{"NumR", "+", "1"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"j", ",", "1", ",", "NumQ"}], "}"}]}], "]"}]}], ";", 
+        RowBox[{"table2", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"table2", "[", 
+             RowBox[{"[", 
+              RowBox[{"i", ",", "j"}], "]"}], "]"}], "=", 
+            RowBox[{"StringReplace", "[", 
+             RowBox[{
+              RowBox[{"table2", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+              RowBox[{
+              "\"\<\\\\(\\\\varphi^*_4(x)\\\\)\>\"", "\[Rule]", 
+               "\"\<k\>\""}]}], "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", 
+             RowBox[{"NumR", "+", "1"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"j", ",", "1", ",", "NumQ"}], "}"}]}], "]"}]}], ";", 
+        RowBox[{"table2", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"table2", "[", 
+             RowBox[{"[", 
+              RowBox[{"i", ",", "j"}], "]"}], "]"}], "=", 
+            RowBox[{"StringReplace", "[", 
+             RowBox[{
+              RowBox[{"table2", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+              RowBox[{
+              "\"\<\\\\(\\\\vec u \\\\cdot \\\\vec v \\\\)\>\"", "\[Rule]", 
+               "\"\<l\>\""}]}], "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", 
+             RowBox[{"NumR", "+", "1"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"j", ",", "1", ",", "NumQ"}], "}"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"table2", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"table2", "[", 
+             RowBox[{"[", 
+              RowBox[{"i", ",", "j"}], "]"}], "]"}], "=", 
+            RowBox[{"StringReplace", "[", 
+             RowBox[{
+              RowBox[{"table2", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+              RowBox[{
+              "\"\<\\\\(\\\\langle\\\\psi | \\\\psi\\\\rangle\\\\)\>\"", 
+               "\[Rule]", "\"\<m\>\""}]}], "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", 
+             RowBox[{"NumR", "+", "1"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"j", ",", "1", ",", "NumQ"}], "}"}]}], "]"}]}], ";", 
+        RowBox[{"table2", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"table2", "[", 
+             RowBox[{"[", 
+              RowBox[{"i", ",", "j"}], "]"}], "]"}], "=", 
+            RowBox[{"StringReplace", "[", 
+             RowBox[{
+              RowBox[{"table2", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+              RowBox[{
+              "\"\<\\\\(\\\\langle E_3 | \\\\psi\\\\rangle\\\\)\>\"", 
+               "\[Rule]", "\"\<n\>\""}]}], "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", 
+             RowBox[{"NumR", "+", "1"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"j", ",", "1", ",", "NumQ"}], "}"}]}], "]"}]}], ";", 
+        RowBox[{"table2", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"table2", "[", 
+             RowBox[{"[", 
+              RowBox[{"i", ",", "j"}], "]"}], "]"}], "=", 
+            RowBox[{"StringReplace", "[", 
+             RowBox[{
+              RowBox[{"table2", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+              RowBox[{
+              "\"\<\\\\(\\\\int\\\\psi^*(x)\\\\psi(x)dx\\\\)\>\"", "\[Rule]", 
+               "\"\<o\>\""}]}], "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", 
+             RowBox[{"NumR", "+", "1"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"j", ",", "1", ",", "NumQ"}], "}"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"table2", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"table2", "[", 
+             RowBox[{"[", 
+              RowBox[{"i", ",", "j"}], "]"}], "]"}], "=", 
+            RowBox[{"StringReplace", "[", 
+             RowBox[{
+              RowBox[{"table2", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+              RowBox[{
+              "\"\<\\\\(\\\\int\\\\varphi^*_1(x)\\\\psi(x)dx\\\\)\>\"", 
+               "\[Rule]", "\"\<p\>\""}]}], "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", 
+             RowBox[{"NumR", "+", "1"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"j", ",", "1", ",", "NumQ"}], "}"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"table2", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"table2", "[", 
+             RowBox[{"[", 
+              RowBox[{"i", ",", "j"}], "]"}], "]"}], "=", 
+            RowBox[{"StringReplace", "[", 
+             RowBox[{
+              RowBox[{"table2", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+              RowBox[{
+              "\"\<\\\\({\\\\vert\\\\langle E_4 | \
+\\\\psi\\\\rangle\\\\vert}^2\\\\)\>\"", "\[Rule]", "\"\<q\>\""}]}], "]"}]}], 
+           ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", 
+             RowBox[{"NumR", "+", "1"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"j", ",", "1", ",", "NumQ"}], "}"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"table2", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"table2", "[", 
+             RowBox[{"[", 
+              RowBox[{"i", ",", "j"}], "]"}], "]"}], "=", 
+            RowBox[{"StringReplace", "[", 
+             RowBox[{
+              RowBox[{"table2", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+              RowBox[{
+              "\"\<\\\\({\\\\vert\\\\int\\\\psi^*(x)\\\\psi(x)dx}\\\\vert^2\\\
+\\)\>\"", "\[Rule]", "\"\<r\>\""}]}], "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", 
+             RowBox[{"NumR", "+", "1"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"j", ",", "1", ",", "NumQ"}], "}"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"table2", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"table2", "[", 
+             RowBox[{"[", 
+              RowBox[{"i", ",", "j"}], "]"}], "]"}], "=", 
+            RowBox[{"StringReplace", "[", 
+             RowBox[{
+              RowBox[{"table2", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+              RowBox[{
+              "\"\<\\\\({\\\\vert\\\\int\\\\varphi^*_2(x)\\\\psi(x)dx}\\\\\
+vert^2\\\\)\>\"", "\[Rule]", "\"\<s\>\""}]}], "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", 
+             RowBox[{"NumR", "+", "1"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"j", ",", "1", ",", "NumQ"}], "}"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"table2", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"table2", "[", 
+             RowBox[{"[", 
+              RowBox[{"i", ",", "j"}], "]"}], "]"}], "=", 
+            RowBox[{"StringReplace", "[", 
+             RowBox[{
+              RowBox[{"table2", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+              RowBox[{
+              "\"\<\\\\(\\\\langle \\\\psi |\\\\)\>\"", "\[Rule]", 
+               "\"\<t\>\""}]}], "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", 
+             RowBox[{"NumR", "+", "1"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"j", ",", "1", ",", "NumQ"}], "}"}]}], "]"}]}]}]}], 
+      "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"table3", "=", 
+    RowBox[{"Drop", "[", 
+     RowBox[{"table2", ",", "0", ",", 
+      RowBox[{"{", 
+       RowBox[{"NumQ", "-", "2"}], "}"}]}], "]"}]}], ";"}], "     ", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "these", " ", "two", " ", "steps", " ", "remove", " ", "the", " ", 
+     "columns", " ", "with", " ", "the", " ", "student", " ", "reasoning", 
+     " ", "responses"}], ",", " ", 
+    RowBox[{
+    "so", " ", "the", " ", "file", " ", "to", " ", "be", " ", "exported", " ",
+      "after", " ", "is", " ", "ready", " ", "to", " ", "be", " ", "used", 
+     " ", "in", " ", "network", " ", "analysis"}]}], " ", 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"table3", "=", 
+    RowBox[{"Drop", "[", 
+     RowBox[{"table3", ",", "0", ",", 
+      RowBox[{"{", 
+       RowBox[{"NumQ", "-", "1"}], "}"}]}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"table3", "//", "MatrixForm"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Export", "[", 
+    RowBox[{"\"\<F21UMaineNetworkReady.xlsx\>\"", ",", "table3"}], "]"}], 
+   ";"}], "  ", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "exports", " ", "an", " ", "Excel", " ", "file", " ", "with", " ", "the", 
+     " ", "first", " ", "row", " ", "being", " ", "the", " ", "concepts", " ",
+      "and", " ", "the", " ", "other", " ", "rows", " ", "being", " ", "the", 
+     " ", "expressions", " ", "each", " ", "student", " ", "dragged", " ", 
+     "into", " ", "their", " ", "boxes"}], ",", " ", 
+    RowBox[{
+    "having", " ", "been", " ", "swapped", " ", "out", " ", "for", " ", 
+     "their", " ", "correlated", " ", "letters", " ", "of", " ", "the", " ", 
+     RowBox[{"alphabet", ".", "  ", "Since"}], " ", "this", " ", "is", " ", 
+     "organized", " ", "in", " ", "a", " ", "way", " ", "that", " ", "is", 
+     " ", "usable", " ", "in", " ", "network", " ", "analysis"}], ",", " ", 
+    RowBox[{
+    "we", " ", "name", " ", "the", " ", "file", " ", 
+     "\"\<___NetworkReady\>\""}]}], " ", "*)"}]}]}], "Input",
+ CellChangeTimes->{{3.8131792643522477`*^9, 3.8131792744831657`*^9}, {
+   3.8131793053202705`*^9, 3.813179453776552*^9}, {3.8131794862432747`*^9, 
+   3.813179507263736*^9}, {3.8131796451251526`*^9, 3.813179660949851*^9}, {
+   3.813179724254131*^9, 3.8131797884737506`*^9}, {3.8132347313880787`*^9, 
+   3.813234736202901*^9}, 3.813234775372687*^9, {3.8132348855561543`*^9, 
+   3.813234900468445*^9}, {3.8132350620741243`*^9, 3.813235139633129*^9}, {
+   3.81323517988293*^9, 3.8132352123682084`*^9}, {3.8132352493819313`*^9, 
+   3.81323530873216*^9}, {3.813235372207573*^9, 3.813235450252384*^9}, 
+   3.8132356159486647`*^9, 3.813235670570937*^9, {3.813235733109062*^9, 
+   3.813235745413162*^9}, {3.813235852218779*^9, 3.813235890028607*^9}, {
+   3.813236004173715*^9, 3.813236014046855*^9}, {3.8132361408689184`*^9, 
+   3.8132361780631447`*^9}, {3.813236219576314*^9, 3.813236243417567*^9}, {
+   3.813236341978799*^9, 3.813236414188846*^9}, {3.8132364461215243`*^9, 
+   3.8132364777520056`*^9}, {3.813236545088109*^9, 3.813236624249134*^9}, {
+   3.813236669649789*^9, 3.8132368560422173`*^9}, {3.8132368871137085`*^9, 
+   3.8132371696538725`*^9}, {3.8132372537787323`*^9, 3.813237271095068*^9}, {
+   3.813237314104933*^9, 3.813237448374592*^9}, {3.813237571590229*^9, 
+   3.813237572995463*^9}, {3.8132376464660635`*^9, 3.8132376780487833`*^9}, {
+   3.8132377228654184`*^9, 3.8132377931565228`*^9}, {3.8132378268625236`*^9, 
+   3.813237867799474*^9}, {3.8132379082676797`*^9, 3.813237953374857*^9}, {
+   3.8132379849040704`*^9, 3.8132380067703733`*^9}, {3.813238045089856*^9, 
+   3.8132382785764785`*^9}, {3.813238354054329*^9, 3.8132386046646137`*^9}, {
+   3.813238645366605*^9, 3.8132388022977057`*^9}, {3.8132389293313117`*^9, 
+   3.8132389728003225`*^9}, {3.8132390332941256`*^9, 
+   3.8132390809668155`*^9}, {3.8132391317107506`*^9, 
+   3.8132393506401367`*^9}, {3.8132394077379317`*^9, 3.813239435904329*^9}, {
+   3.813239503102656*^9, 3.8132396896369724`*^9}, {3.813239800464794*^9, 
+   3.8132400040447645`*^9}, {3.8132401495603824`*^9, 
+   3.8132401496621094`*^9}, {3.813240227018255*^9, 3.813240278465061*^9}, {
+   3.813240310351819*^9, 3.8132403762676754`*^9}, 3.8132404565761642`*^9, 
+   3.813240740518211*^9, 3.8132552938086967`*^9, {3.8133139727182217`*^9, 
+   3.813314193478777*^9}, {3.813314225659229*^9, 3.8133142900093565`*^9}, {
+   3.813314435762024*^9, 3.813314499560339*^9}, {3.8133145655787816`*^9, 
+   3.8133145664063587`*^9}, {3.813314977892224*^9, 3.813315131336629*^9}, {
+   3.813315316678269*^9, 3.8133153543702316`*^9}, {3.8133157140253716`*^9, 
+   3.813315714599453*^9}, {3.8134987887821665`*^9, 3.8134987961644955`*^9}, {
+   3.813498841865947*^9, 3.8134988961330585`*^9}, {3.813498953300835*^9, 
+   3.813499132773327*^9}, {3.813499311160889*^9, 3.8134993146263566`*^9}, {
+   3.8134993494159355`*^9, 3.813499370863799*^9}, {3.8135000436842055`*^9, 
+   3.813500100402999*^9}, {3.81350014146741*^9, 3.8135002005444517`*^9}, {
+   3.81350023266243*^9, 3.8135003170817533`*^9}, {3.8135003483048315`*^9, 
+   3.8135004774395356`*^9}, {3.813500512604202*^9, 3.8135005229285*^9}, {
+   3.81350057509417*^9, 3.8135005844151196`*^9}, {3.813500700315918*^9, 
+   3.8135007144786806`*^9}, {3.813500748018508*^9, 3.8135007578141155`*^9}, {
+   3.813500798179126*^9, 3.813500873886613*^9}, {3.8135009486801634`*^9, 
+   3.813501150072543*^9}, 3.8135012157921853`*^9, {3.813501257722396*^9, 
+   3.813501323372884*^9}, {3.813501410804761*^9, 3.8135014225124598`*^9}, {
+   3.813501883463048*^9, 3.813501907814155*^9}, {3.813501995627593*^9, 
+   3.8135020614751177`*^9}, {3.813502114909834*^9, 3.8135021685692616`*^9}, {
+   3.8135022137600594`*^9, 3.8135028021745405`*^9}, {3.8159036724078865`*^9, 
+   3.8159036793513136`*^9}, {3.815904084923155*^9, 3.815904097204335*^9}, {
+   3.815904251523743*^9, 3.8159042573939962`*^9}, {3.8159042887110357`*^9, 
+   3.8159043516554337`*^9}, {3.843736982166949*^9, 3.8437373901599708`*^9}, {
+   3.8437376133586483`*^9, 3.8437377939040327`*^9}, {3.8437385208199577`*^9, 
+   3.843738537449993*^9}, 3.8437385913833866`*^9, {3.8437386287310967`*^9, 
+   3.843738716716355*^9}, {3.843738758643999*^9, 3.843738816437599*^9}, {
+   3.843738852561471*^9, 3.843739085473761*^9}, {3.8437391179840918`*^9, 
+   3.8437391213163786`*^9}, {3.8437391621348963`*^9, 
+   3.8437392014760904`*^9}, {3.8454633629321723`*^9, 
+   3.8454633671261263`*^9}, {3.845463533651991*^9, 3.8454636325075707`*^9}, {
+   3.845463714649678*^9, 3.8454637178386183`*^9}, {3.8454638710060244`*^9, 
+   3.845463932297781*^9}},ExpressionUUID->"c3211afc-aff7-4061-b854-\
+346099fbd726"]
+},
+WindowSize->{1920, 1117},
+WindowMargins->{{-8, Automatic}, {856, Automatic}},
+FrontEndVersion->"11.2 for Microsoft Windows (64-bit) (September 10, 2017)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 34040, 803, 1340, "Input",ExpressionUUID->"c3211afc-aff7-4061-b854-346099fbd726"]
+}
+]
+*)
+

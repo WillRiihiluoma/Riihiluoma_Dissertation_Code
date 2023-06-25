@@ -1,0 +1,615 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     25568,        607]
+NotebookOptionsPosition[     25032,        590]
+NotebookOutlinePosition[     25382,        605]
+CellTagsIndexPosition[     25339,        602]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"data", "=", 
+    RowBox[{
+     RowBox[{
+     "Import", "[", 
+      "\"\<C:\\\\Users\\\\riiwi\\\\OneDrive - University of Maine \
+System\\\\Will\\\\Data Collection and Analysis\\\\Surveys \
+F21\\\\UMaine\\\\F21UMaineNetworkReady.xlsx\>\"", "]"}], "[", 
+     RowBox[{"[", "1", "]"}], "]"}]}], ";", "  ", 
+   RowBox[{"(*", " ", 
+    RowBox[{"importing", " ", "NetworkReady", " ", "data"}], " ", "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"SetDirectory", "[", 
+    RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ";", "  ", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "makes", " ", "it", " ", "so", " ", "any", " ", "files", " ", "exported", 
+     " ", "wil", " ", "be", " ", "saved", " ", "in", " ", "the", " ", "same", 
+     " ", "folder", " ", "that", " ", "this", " ", "file", " ", "is", " ", 
+     "located", " ", "in"}], " ", "*)"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"data", "//", "MatrixForm"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"numcol", "=", 
+    RowBox[{
+     RowBox[{"Dimensions", "[", "data", "]"}], "[", 
+     RowBox[{"[", "2", "]"}], "]"}]}], ";", "  ", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "these", " ", "two", " ", "define", " ", "variables", " ", "for", " ", 
+     "the", " ", "size", " ", "of", " ", "the", " ", "matrix", " ", "of", " ",
+      "the", " ", "data", " ", "pulled", " ", "from", " ", "the", " ", 
+     "\"\<__NetworkReady\>\"", " ", "Excel", " ", "file"}], " ", "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"numrow", "=", 
+    RowBox[{
+     RowBox[{"Dimensions", "[", "data", "]"}], "[", 
+     RowBox[{"[", "1", "]"}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"nExp", "=", "20"}], ";", "  ", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "defines", " ", "a", " ", "variable", " ", "\"\<nExp\>\"", " ", "that", 
+     " ", "represents", " ", "the", " ", "total", " ", "number", " ", "of", 
+     " ", "expressions", " ", "used", " ", "in", " ", "the", " ", "survey"}], 
+    " ", "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"table4", "=", 
+    RowBox[{"Table", "[", 
+     RowBox[{"0", ",", 
+      RowBox[{"{", 
+       RowBox[{"i", ",", "1", ",", "nExp"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"j", ",", "1", ",", "nExp"}], "}"}]}], "]"}]}], ";", "  ", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "creates", " ", "a", " ", "matrix", " ", "filled", " ", "with", " ", 
+     "zeroes", " ", "that", " ", "the", " ", "#", " ", "of", " ", "pairs", 
+     " ", "of", " ", "each", " ", "expression", " ", "will", " ", 
+     "eventually", " ", "be", " ", "filled", " ", "with"}], " ", "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"table4", "//", "MatrixForm"}], ";"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "These", " ", "nested", " ", "for", " ", "loops", " ", "will", " ", 
+     "count", " ", "each", " ", "pair", " ", "of", " ", "expressions", " ", 
+     "used", " ", "only", " ", "once", " ", "per", " ", 
+     RowBox[{"student", ".", " ", "I", ".", "e", "."}]}], ",", " ", 
+    RowBox[{
+    "if", " ", "one", " ", "student", " ", "used", " ", "the", " ", "same", 
+     " ", "pair", " ", "of", " ", "expressions", " ", "for", " ", "multiple", 
+     " ", "concepts"}], ",", " ", 
+    RowBox[{
+    "it", " ", "will", " ", "only", " ", "count", " ", "as", " ", "one", " ", 
+     "use", " ", "of", " ", "the", " ", "pair", " ", "in", " ", "the", " ", 
+     "final", " ", 
+     RowBox[{"data", ".", "  ", "Thus"}], " ", "this", " ", "data", " ", 
+     "will", " ", "tell", " ", "us", " ", "how", " ", "many", " ", "students",
+      " ", "used", " ", "the", " ", "given", " ", "pairs", " ", "of", " ", 
+     "expressions", " ", "together"}]}], " ", "*)"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"pairsempty", "=", 
+    RowBox[{"Table", "[", 
+     RowBox[{"0", ",", 
+      RowBox[{"{", 
+       RowBox[{"i", ",", "1", ",", "nExp"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"j", ",", "1", ",", "nExp"}], "}"}]}], "]"}]}], ";", "  ", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "creates", " ", "a", " ", "matrix", " ", "filled", " ", "with", " ", 
+     "zeroes", " ", "for", " ", "use", " ", "in", " ", 
+     RowBox[{"loops", ".", " ", "The"}], " ", "pairs", " ", "matrix", " ", 
+     "will", " ", "reset", " ", "to", " ", "this", " ", "empty", " ", "one", 
+     " ", "once", " ", "we", " ", "progress", " ", "to", " ", "the", " ", 
+     "next", " ", "student", " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"i", ".", "e", ".", " ", "the"}], " ", "next", " ", "row"}], 
+       ",", " ", 
+       RowBox[{
+        RowBox[{"i", ".", "e", ".", " ", "for"}], " ", "every", " ", "i", " ",
+         "in", " ", "the", " ", "loop"}]}], " "}]}], "*)"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"pairs", "=", "pairsempty"}], ";", " ", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{
+     "copies", " ", "the", " ", "matrix", " ", "filled", " ", "with", " ", 
+      RowBox[{"zeroes", ".", "  ", "Once"}], " ", "a", " ", "pair", " ", 
+      "has", " ", "been", " ", "used", " ", "by", " ", "a", " ", "student"}], 
+     ",", " ", 
+     RowBox[{
+     "will", " ", "update", " ", "with", " ", "a", " ", "1", " ", "in", " ", 
+      "the", " ", "k"}], ",", 
+     RowBox[{
+     "lth", " ", "position", " ", "that", " ", "will", " ", "be", " ", 
+      "checked", " ", "before", " ", "increasing", " ", 
+      RowBox[{"table4", "'"}], "s", " ", 
+      RowBox[{"entries", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"For", "[", 
+    RowBox[{
+     RowBox[{"i", "=", "2"}], ",", 
+     RowBox[{"i", "\[LessEqual]", "numrow"}], ",", 
+     RowBox[{"i", "++"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"pairs", "=", "pairsempty"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"For", "[", 
+       RowBox[{
+        RowBox[{"j", "=", "1"}], ",", 
+        RowBox[{"j", "\[LessEqual]", "numcol"}], ",", 
+        RowBox[{"j", "++"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"For", "[", 
+         RowBox[{
+          RowBox[{"k", "=", "1"}], ",", 
+          RowBox[{"k", "\[LessEqual]", 
+           RowBox[{"nExp", "+", "1"}]}], ",", 
+          RowBox[{"k", "++"}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"For", "[", 
+            RowBox[{
+             RowBox[{"l", "=", "1"}], ",", 
+             RowBox[{"l", "\[LessEqual]", 
+              RowBox[{"nExp", "+", "1"}]}], ",", 
+             RowBox[{"l", "++"}], ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"Length", "[", 
+                  RowBox[{"LetterNumber", "[", 
+                   RowBox[{"StringDelete", "[", 
+                    RowBox[{
+                    RowBox[{"data", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", "\"\<,\>\""}],
+                     "]"}], "]"}], "]"}], "\[Equal]", "0"}], ",", 
+                RowBox[{
+                 RowBox[{"data", "[", 
+                  RowBox[{"[", 
+                   RowBox[{"i", ",", "j"}], "]"}], "]"}], "=", 
+                 RowBox[{"{", 
+                  RowBox[{"data", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"i", ",", "j"}], "]"}], "]"}], "}"}]}]}], "]"}], 
+              ";", 
+              RowBox[{"(*", " ", 
+               RowBox[{
+                RowBox[{"changes", " ", "all", " ", "single"}], "-", 
+                RowBox[{
+                "letter", " ", "entries", " ", "into", " ", "single"}], "-", 
+                RowBox[{"entry", " ", 
+                 RowBox[{"lists", ".", "  ", "This"}], " ", "is", " ", "done",
+                  " ", "because", " ", 
+                 RowBox[{"ContainsAny", "[", "]"}], " ", "requires", " ", "a",
+                  " ", "list", " ", "as", " ", "input"}]}], " ", "*)"}], 
+              "\[IndentingNewLine]", 
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"ContainsAny", "[", 
+                  RowBox[{
+                   RowBox[{"LetterNumber", "[", 
+                    RowBox[{"StringDelete", "[", 
+                    RowBox[{
+                    RowBox[{"data", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", "\"\<,\>\""}],
+                     "]"}], "]"}], ",", 
+                   RowBox[{"{", "k", "}"}]}], "]"}], "&&", 
+                 RowBox[{"ContainsAny", "[", 
+                  RowBox[{
+                   RowBox[{"LetterNumber", "[", 
+                    RowBox[{"StringDelete", "[", 
+                    RowBox[{
+                    RowBox[{"data", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", "\"\<,\>\""}],
+                     "]"}], "]"}], ",", 
+                   RowBox[{"{", "l", "}"}]}], "]"}], "&&", 
+                 RowBox[{
+                  RowBox[{"pairs", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"k", ",", "l"}], "]"}], "]"}], "\[Equal]", 
+                  "0"}]}], ",", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"table4", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"k", ",", "l"}], "]"}], "]"}], "++"}], ";", 
+                 RowBox[{
+                  RowBox[{"pairs", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"k", ",", "l"}], "]"}], "]"}], "++"}]}]}], 
+               "]"}]}]}], "   ", 
+            RowBox[{"(*", " ", 
+             RowBox[{
+              RowBox[{
+              "goes", " ", "through", " ", "each", " ", "combination", " ", 
+               "of", " ", "letters", " ", "and", " ", "compares"}], ";", " ", 
+              RowBox[{
+              "updates", " ", "table4", " ", "entries", " ", "with", " ", 
+               "the", " ", "number", " ", "of", " ", "times", " ", "the", " ",
+                "pairs", " ", "appear", " ", "together", " ", "in", " ", 
+               "the", " ", "data"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+            "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]}], 
+       "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"table4", "//", "MatrixForm"}]}], "Input",
+ CellChangeTimes->{{3.8274903045485177`*^9, 3.8274903606170197`*^9}, {
+  3.8438089455193624`*^9, 3.843808973110955*^9}, {3.8438090122902603`*^9, 
+  3.843809143447274*^9}, {3.8454641199068*^9, 
+  3.8454641648877296`*^9}},ExpressionUUID->"2330387a-55f4-4486-bf91-\
+b376e0e5d176"],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", GridBox[{
+     {"14", "9", "3", "0", "7", "10", "9", "0", "0", "1", "1", "0", "0", "1", 
+      "0", "0", "0", "0", "0", "5"},
+     {"9", "14", "6", "0", "7", "11", "10", "0", "1", "4", "3", "0", "1", "1",
+       "0", "0", "0", "0", "0", "5"},
+     {"3", "6", "8", "0", "1", "4", "4", "0", "1", "1", "1", "0", "1", "0", 
+      "0", "0", "0", "0", "0", "1"},
+     {"0", "0", "0", "2", "2", "2", "0", "2", "0", "1", "0", "0", "0", "0", 
+      "0", "0", "0", "0", "0", "0"},
+     {"7", "7", "1", "2", "13", "10", "9", "13", "8", "6", "4", "0", "0", "1",
+       "0", "0", "0", "0", "0", "10"},
+     {"10", "11", "4", "2", "10", "14", "13", "9", "4", "10", "9", "0", "0", 
+      "3", "0", "0", "0", "0", "0", "7"},
+     {"9", "10", "4", "0", "9", "13", "13", "4", "4", "8", "9", "0", "0", "3",
+       "0", "0", "0", "0", "0", "7"},
+     {"0", "0", "0", "2", "13", "9", "4", "14", "9", "8", "5", "0", "1", "1", 
+      "1", "2", "0", "0", "0", "8"},
+     {"0", "1", "1", "0", "8", "4", "4", "9", "9", "6", "6", "0", "1", "1", 
+      "1", "1", "0", "0", "0", "7"},
+     {"1", "4", "1", "1", "6", "10", "8", "8", "6", "12", "11", "0", "1", "2",
+       "1", "1", "0", "0", "0", "3"},
+     {"1", "3", "1", "0", "4", "9", "9", "5", "6", "11", "11", "0", "1", "2", 
+      "1", "1", "0", "0", "0", "4"},
+     {"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "14", "12", "11",
+       "6", "7", "3", "1", "1", "0"},
+     {"0", "1", "1", "0", "0", "0", "0", "1", "1", "1", "1", "12", "14", "14",
+       "9", "9", "3", "1", "1", "0"},
+     {"1", "1", "0", "0", "1", "3", "3", "1", "1", "2", "2", "11", "14", "14",
+       "10", "11", "3", "1", "1", "1"},
+     {"0", "0", "0", "0", "0", "0", "0", "1", "1", "1", "1", "6", "9", "10", 
+      "11", "10", "3", "1", "1", "0"},
+     {"0", "0", "0", "0", "0", "0", "0", "2", "1", "1", "1", "7", "9", "11", 
+      "10", "11", "2", "1", "1", "0"},
+     {"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "3", "3", "3", 
+      "3", "2", "14", "12", "12", "0"},
+     {"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "1", "1", 
+      "1", "1", "12", "12", "11", "0"},
+     {"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "1", "1", 
+      "1", "1", "12", "11", "12", "0"},
+     {"5", "5", "1", "0", "10", "7", "7", "8", "7", "3", "4", "0", "0", "1", 
+      "0", "0", "0", "0", "0", "10"}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[0.7]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[BoxForm`e$]]]], "Output",
+ CellChangeTimes->{3.827490415483849*^9, 
+  3.845464212533578*^9},ExpressionUUID->"648429e8-8b05-4a30-bee6-\
+1442b4fd198e"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "this", " ", "cell", " ", "will", " ", "take", " ", "table4", " ", "and", 
+     " ", "turn", " ", "it", " ", "into", " ", "a", " ", "list", " ", "with", 
+     " ", "every", " ", "combination", " ", "of", " ", "expressions", " ", 
+     "that", " ", "had", " ", "students", " ", "use", " ", "them", " ", 
+     "simultaneously"}], ",", " ", 
+    RowBox[{
+    "as", " ", "well", " ", "as", " ", "the", " ", "number", " ", "of", " ", 
+     "students", " ", "that", " ", "used", " ", "each", " ", "pair"}]}], " ", 
+   "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"tablesize", "=", 
+     RowBox[{
+      RowBox[{"Dimensions", "[", "table4", "]"}], "[", 
+      RowBox[{"[", "1", "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"tritable4", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{"0", ",", "tablesize", ",", "tablesize"}], "]"}]}], ";"}], 
+   "   ", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "Initializes", " ", "another", " ", "square", " ", "matrix", " ", "the", 
+     " ", "same", " ", "size", " ", "as", " ", 
+     RowBox[{"table4", ".", "  ", "This"}], " ", "one", " ", "will", " ", 
+     "be", " ", "filled", " ", "in", " ", "with", " ", "all", " ", "of", " ", 
+     "the", " ", "entries", " ", "of", " ", "table4", " ", "that", " ", 
+     "appear", " ", "in", " ", "the", " ", "bottom", " ", "left", " ", 
+     "triangle"}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"tritable4", "//", "MatrixForm"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"For", "[", 
+    RowBox[{
+     RowBox[{"i", "=", "1"}], ",", 
+     RowBox[{"i", "\[LessEqual]", "tablesize"}], ",", 
+     RowBox[{"i", "++"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"For", "[", 
+      RowBox[{
+       RowBox[{"j", "=", "1"}], ",", 
+       RowBox[{"j", "\[LessEqual]", "tablesize"}], ",", 
+       RowBox[{"j", "++"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"i", "\[LessEqual]", "j"}], ",", 
+          RowBox[{"Break", "[", "]"}]}], "]"}], ";", 
+        "                         ", 
+        RowBox[{"(*", " ", 
+         RowBox[{
+          RowBox[{
+          "makes", " ", "it", " ", "so", " ", "only", " ", "one", " ", "side",
+            " ", "of", " ", "the", " ", "off"}], "-", 
+          RowBox[{
+          "diagonals", " ", "in", " ", "the", " ", "\"\<mat\>\"", " ", 
+           "matrix", " ", "makes", " ", "it", " ", "into", " ", "the", " ", 
+           "final", " ", "\"\<tritable4\>\"", " ", "matrix"}]}], " ", "*)"}], 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"tritable4", "[", 
+          RowBox[{"[", 
+           RowBox[{"i", ",", "j"}], "]"}], "]"}], "=", 
+         RowBox[{"table4", "[", 
+          RowBox[{"[", 
+           RowBox[{"i", ",", "j"}], "]"}], "]"}]}], ";"}]}], 
+      "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"tritable4", "//", "MatrixForm"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"finaltable", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{"0", ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", 
+         RowBox[{"tablesize", "^", "2"}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"j", ",", "3"}], "}"}]}], "]"}]}], ";"}], "  ", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{"initializes", " ", "the", " ", "final", " ", "three"}], "-", 
+     RowBox[{
+     "column", " ", "table", " ", "as", " ", "a", " ", "table", " ", "of", 
+      " ", "zeroes", " ", "with", " ", "as", " ", "many", " ", "rows", " ", 
+      "as", " ", "there", " ", "are", " ", "possible", " ", "combinations", 
+      " ", "of", " ", "expression", " ", "pairs"}]}], " ", "*)"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"finaltable", "//", "MatrixForm"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"j", "=", "1"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{"For", "[", 
+    RowBox[{
+     RowBox[{"i", "=", "1"}], ",", 
+     RowBox[{"i", "\[LessEqual]", 
+      RowBox[{"tablesize", "^", "2"}]}], ",", 
+     RowBox[{"i", "++"}], ",", "    ", 
+     RowBox[{"(*", " ", 
+      RowBox[{
+       RowBox[{
+       "fills", " ", "the", " ", "first", " ", "column", " ", "with", " ", 
+        "the", " ", "numbers", " ", "needed"}], ",", " ", 
+       RowBox[{
+       "where", " ", "it", " ", "is", " ", "the", " ", "same", " ", "number", 
+        " ", "repeating", " ", "as", " ", "many", " ", "times", " ", "as", 
+        " ", "there", " ", "are", " ", "total", " ", "numbers", " ", "before",
+         " ", "counting", " ", "up", " ", "by", " ", "one", " ", "at", " ", 
+        "a", " ", "time"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"tablesize", "*", 
+          RowBox[{"j", "/", "i"}]}], "<", "1"}], ",", 
+        RowBox[{"j", "++"}]}], "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"finaltable", "[", 
+        RowBox[{"[", 
+         RowBox[{"i", ",", "1"}], "]"}], "]"}], "=", "j"}], ";"}]}], 
+    "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"finaltable", "//", "MatrixForm"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"k", "=", "1"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{"For", "[", 
+    RowBox[{
+     RowBox[{"i", "=", "1"}], ",", 
+     RowBox[{"i", "\[LessEqual]", 
+      RowBox[{"tablesize", "^", "2"}]}], ",", 
+     RowBox[{"i", "++"}], ",", "    ", 
+     RowBox[{"(*", " ", 
+      RowBox[{
+       RowBox[{
+       "fills", " ", "the", " ", "second", " ", "column", " ", "with", " ", 
+        "numbers", " ", "needed"}], ",", " ", 
+       RowBox[{
+       "where", " ", "it", " ", "counts", " ", "up", " ", "each", " ", "row", 
+        " ", "until", " ", "reaching", " ", "the", " ", "highest", " ", 
+        "number", " ", "before", " ", "dropping", " ", "back", " ", "to", " ",
+         "one"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"k", "++"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Mod", "[", 
+          RowBox[{"i", ",", "tablesize"}], "]"}], "\[Equal]", "1"}], ",", 
+        RowBox[{"k", "=", "1"}]}], "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"finaltable", "[", 
+        RowBox[{"[", 
+         RowBox[{"i", ",", "2"}], "]"}], "]"}], "=", "k"}]}]}], 
+    "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"finaltable", "//", "MatrixForm"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"For", "[", 
+    RowBox[{
+     RowBox[{"i", "=", "1"}], ",", 
+     RowBox[{"i", "\[LessEqual]", 
+      RowBox[{"tablesize", "^", "2"}]}], ",", 
+     RowBox[{"i", "++"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"finaltable", "[", 
+       RowBox[{"[", 
+        RowBox[{"i", ",", "3"}], "]"}], "]"}], "=", 
+      RowBox[{"tritable4", "[", 
+       RowBox[{"[", 
+        RowBox[{
+         RowBox[{"finaltable", "[", 
+          RowBox[{"[", 
+           RowBox[{"i", ",", "1"}], "]"}], "]"}], ",", 
+         RowBox[{"finaltable", "[", 
+          RowBox[{"[", 
+           RowBox[{"i", ",", "2"}], "]"}], "]"}]}], "]"}], "]"}]}]}], "    ", 
+    RowBox[{"(*", " ", 
+     RowBox[{
+     "fills", " ", "the", " ", "third", " ", "column", " ", "with", " ", 
+      "the", " ", "numbers", " ", "associated", " ", "with", " ", "the", " ", 
+      "fist", " ", "two", " ", 
+      RowBox[{"columns", "'"}], " ", "numbers", " ", "from", " ", "the", " ", 
+      "\"\<tritable4\>\"", " ", "matrix"}], " ", "*)"}], 
+    "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"finaltable1", "=", 
+     RowBox[{"Select", "[", 
+      RowBox[{"finaltable", ",", 
+       RowBox[{
+        RowBox[{"FreeQ", "[", 
+         RowBox[{"#", ",", "0"}], "]"}], "&"}]}], "]"}]}], ";"}], "   ", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{
+     "removes", " ", "all", " ", "rows", " ", "with", " ", "zeroes", " ", 
+      "in", " ", "it"}], ",", " ", 
+     RowBox[{"creates", " ", "\"\<finaltable1\>\"", " ", "matrix"}]}], " ", 
+    "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"finaltable", "//", "MatrixForm"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"finaltable1", "//", "MatrixForm"}], ";"}], "\[IndentingNewLine]",
+    "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"rownumfinal", "=", 
+     RowBox[{
+      RowBox[{"Dimensions", "[", "finaltable1", "]"}], "[", 
+      RowBox[{"[", "1", "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"For", "[", 
+    RowBox[{
+     RowBox[{"i", "=", "1"}], ",", 
+     RowBox[{"i", "\[LessEqual]", "rownumfinal"}], ",", 
+     RowBox[{"i", "++"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"finaltable1", "[", 
+        RowBox[{"[", 
+         RowBox[{"i", ",", "1"}], "]"}], "]"}], "=", 
+       RowBox[{"FromLetterNumber", "[", 
+        RowBox[{"finaltable1", "[", 
+         RowBox[{"[", 
+          RowBox[{"i", ",", "1"}], "]"}], "]"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"finaltable1", "[", 
+        RowBox[{"[", 
+         RowBox[{"i", ",", "2"}], "]"}], "]"}], "=", 
+       RowBox[{"FromLetterNumber", "[", 
+        RowBox[{"finaltable1", "[", 
+         RowBox[{"[", 
+          RowBox[{"i", ",", "2"}], "]"}], "]"}], "]"}]}], ";"}]}], 
+    "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"finaltable1", "//", "MatrixForm"}], ";"}], "\[IndentingNewLine]",
+    "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Export", "[", 
+     RowBox[{
+     "\"\<F21UMaineExpressionPerStudentResults.xlsx\>\"", ",", 
+      "finaltable1"}], "]"}], ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.8274904964593887`*^9, 3.8274905387480392`*^9}, {
+  3.8274905807527857`*^9, 3.8274906541163635`*^9}, {3.8438094062411823`*^9, 
+  3.8438094497315083`*^9}, {3.8438098881525025`*^9, 3.8438098882993875`*^9}, {
+  3.843809959413189*^9, 3.8438101502917852`*^9}, {3.845464317917012*^9, 
+  3.8454643224089384`*^9}},ExpressionUUID->"1c941285-e016-4c43-85da-\
+cb1d9ca89bab"]
+},
+WindowSize->{1920, 1117},
+WindowMargins->{{-8, Automatic}, {856, Automatic}},
+FrontEndVersion->"11.2 for Microsoft Windows (64-bit) (September 10, 2017)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 10811, 244, 675, "Input",ExpressionUUID->"2330387a-55f4-4486-bf91-b376e0e5d176"],
+Cell[11394, 268, 3008, 58, 368, "Output",ExpressionUUID->"648429e8-8b05-4a30-bee6-1442b4fd198e"]
+}, Open  ]],
+Cell[14417, 329, 10611, 259, 1188, "Input",ExpressionUUID->"1c941285-e016-4c43-85da-cb1d9ca89bab"]
+}
+]
+*)
+
